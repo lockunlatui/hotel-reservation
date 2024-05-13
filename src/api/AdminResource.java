@@ -3,6 +3,7 @@ package api;
 import model.Customer;
 import model.IRoom;
 import model.Reservation;
+import model.Room;
 import service.CustomerService;
 import service.ReservationService;
 
@@ -12,7 +13,7 @@ import java.util.List;
 
 public class AdminResource {
     private static AdminResource adminResource;
-    private final List<Reservation> reservations = new ArrayList<>();
+
 
     ReservationService reservationService = new ReservationService();
     CustomerService customerService = new CustomerService();
@@ -30,15 +31,15 @@ public class AdminResource {
         return customerService.getCustomer(email);
     }
 
-    public void addRoom(List<IRoom> rooms) {
+    public void addRoom(List<Room> rooms) {
 
 
-        for(IRoom room : rooms) {
+        for(Room room : rooms) {
             reservationService.addRoom(room);
         }
     }
 
-    public Collection<IRoom> getAllRooms() {
+    public Collection<Room> getAllRooms() {
         return reservationService.getRooms();
     }
 
@@ -49,15 +50,6 @@ public class AdminResource {
     }
 
     public void displayAllReservations() {
-        for (Reservation reservation : reservations) {
-            System.out.println("Reservation Details:");
-            System.out.println("Customer: " + reservation.getCustomer());
-            System.out.println("Room: " + reservation.getRoom().getRoomNumber());
-            System.out.println("Check-In Date: " + reservation.getCheckInDate());
-            System.out.println("Check-Out Date: " + reservation.getCheckOutDate());
-            System.out.println("----------------------------------");
-        }
-
-
+        System.out.println("Reservation List:" + reservationService.getReservations());
     }
 }

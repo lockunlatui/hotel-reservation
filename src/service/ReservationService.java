@@ -1,21 +1,20 @@
 package service;
 
-import api.AdminResource;
 import model.Customer;
 import model.IRoom;
 import model.Reservation;
+import model.Room;
 
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
 public class ReservationService {
-    private final static List<IRoom> rooms = new ArrayList<>();
-    private final List<Reservation> reservations = new ArrayList<>();
+    private final static List<Room> rooms = new ArrayList<Room>();
+    private final static List<Reservation> reservations = new ArrayList<>();
 
-    public void addRoom(IRoom room) {
+    public void addRoom(Room room) {
         if (!rooms.contains(room)) {
             rooms.add(room);
             System.out.println("Created a new room " +room);
@@ -115,7 +114,7 @@ public class ReservationService {
         }
 
         for(Reservation reservation : reservations){
-            System.out.println(reservation);
+            System.out.println("List reservation: " +reservation);
         }
     }
 
@@ -123,7 +122,7 @@ public class ReservationService {
         return reservations;
     }
 
-    public Collection<IRoom> getRooms() {
+    public Collection<Room> getRooms() {
         return rooms;
     }
 

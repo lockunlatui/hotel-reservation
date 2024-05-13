@@ -2,6 +2,7 @@ import api.HotelResource;
 import model.Customer;
 import model.IRoom;
 import model.Reservation;
+import service.CustomerService;
 import service.ReservationService;
 import validation.CustomerValidation;
 
@@ -15,6 +16,7 @@ import java.util.Scanner;
 public class MainMenu {
     static HotelResource hotelResource = new HotelResource();
     static ReservationService reservationService = new ReservationService();
+    static CustomerService customerService = new CustomerService();
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
@@ -27,7 +29,37 @@ public class MainMenu {
                     handleFindAndReserve();
                     break;
                 case 2:
-                    System.out.print("See my reservations");
+                    System.out.println("Enter email");
+                    Scanner enterCustomerEmail = new Scanner(System.in);
+                    boolean isEmailValid = false;
+                    while(!isEmailValid) {
+                        String email = "";
+
+                        email = enterCustomerEmail.nextLine();
+                        Customer getCustomer = null;
+
+                        for(Customer customer : customerService.getAllCustomers()) {
+                            if(Objects.equals(customer.getEmail(), email)){
+                                getCustomer = customer;
+                                isEmailValid = true;
+                            } else {
+                                System.out.println("Customer isn't exist");
+                                enterCustomerEmail.next();
+                            }
+                        }
+
+                        if(getCustomer != null && !getCustomer.getEmail().isEmpty()){
+                            System.out.print("See my reservations: " +reservationService.getCustomersReservation(getCustomer));
+                        } else {
+                            System.out.println("Customer isn't exist");
+                            break;
+                        }
+
+
+                    }
+
+
+
                     break;
                 case 3:
                     handleCreateCustomer();

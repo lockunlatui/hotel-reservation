@@ -51,29 +51,16 @@ public class AdminMenu {
         Double finalRoomPrice = roomPrice;
         int finalRoomType = roomType;
 
-        IRoom room = new IRoom() {
-            @Override
-            public String getRoomNumber() {
-                return roomNumber;
-            }
 
-            @Override
-            public Double getRoomPrice() {
-                return finalRoomPrice;
-            }
 
-            @Override
-            public RoomType getRoomType() {
-                return finalRoomType == 1 ? RoomType.SINGLE : RoomType.DOUBLE;
-            }
+        Room room = new Room();
 
-            @Override
-            public boolean isFree() {
-                return false;
-            }
-        };
+        room.setRoomNumber(roomNumber);
+        room.setPrice(finalRoomPrice);
+        room.setEnumeration(finalRoomType == 1 ? RoomType.SINGLE : RoomType.DOUBLE);
 
-        List<IRoom> rooms = new ArrayList<>();
+        List<Room> rooms = new ArrayList<>();
+
         rooms.add(room);
 
         adminResource.addRoom(rooms);

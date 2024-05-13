@@ -1,6 +1,6 @@
 package model;
 
-public abstract class Room implements IRoom {
+public class Room implements IRoom {
 
     private String roomNumber;
     private Double price;
@@ -29,5 +29,17 @@ public abstract class Room implements IRoom {
     @Override
     public boolean isFree() {
         return false;
+    }
+
+    public void setRoomNumber(String roomNumber) {
+        this.roomNumber = roomNumber;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    public void setEnumeration(RoomType enumeration) {
+        this.enumeration = enumeration;
     }
 }
