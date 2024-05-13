@@ -4,10 +4,7 @@ import model.*;
 import service.CustomerService;
 import service.ReservationService;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Scanner;
+import java.util.*;
 
 public class AdminMenu {
     static AdminResource adminResource = AdminResource.getInstance();
@@ -16,10 +13,43 @@ public class AdminMenu {
         Scanner scannerAddRoom = new Scanner(System.in);
         System.out.println("Enter room number: ");
         String roomNumber = scannerAddRoom.nextLine();
-        System.out.println("Enter room price: ");
-        Double roomPrice = scannerAddRoom.nextDouble();
-        System.out.println("Enter room type: 1 for single bed, 2 for double bed");
-        int roomType = scannerAddRoom.nextInt();
+
+        boolean isValidRoomPrice = false;
+        Double roomPrice = 0.0;
+
+        while(!isValidRoomPrice) {
+            System.out.println("Enter room price: ");
+            try {
+                roomPrice = scannerAddRoom.nextDouble();
+                isValidRoomPrice = true;
+            } catch (InputMismatchException e) {
+                System.out.println("please fill the number");
+                scannerAddRoom.next();
+            }
+        }
+
+
+        int roomType = 0;
+        boolean isValidRoomType = false;
+        while(!isValidRoomType) {
+            System.out.println("Enter room type: 1 for single bed, 2 for double bed");
+            try {
+                roomType = scannerAddRoom.nextInt();
+                isValidRoomType = true;
+
+                if(roomType != 1 && roomType != 2) {
+                    System.out.println("Enter room type: 1 for single bed, 2 for double bed");
+                    isValidRoomType = false;
+                    scannerAddRoom.next();
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Enter room type: 1 for single bed, 2 for double bed");
+                scannerAddRoom.next();
+            }
+        }
+
+        Double finalRoomPrice = roomPrice;
+        int finalRoomType = roomType;
 
         IRoom room = new IRoom() {
             @Override
@@ -29,12 +59,12 @@ public class AdminMenu {
 
             @Override
             public Double getRoomPrice() {
-                return roomPrice;
+                return finalRoomPrice;
             }
 
             @Override
             public RoomType getRoomType() {
-                return roomType == 1 ? RoomType.SINGLE : RoomType.DOUBLE;
+                return finalRoomType == 1 ? RoomType.SINGLE : RoomType.DOUBLE;
             }
 
             @Override
