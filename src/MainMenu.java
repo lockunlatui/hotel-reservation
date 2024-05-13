@@ -1,6 +1,7 @@
 import api.HotelResource;
 import model.Customer;
 import model.IRoom;
+import model.Reservation;
 import service.ReservationService;
 import validation.CustomerValidation;
 
@@ -134,22 +135,23 @@ public class MainMenu {
 
                                         System.out.println("What room number would you like to reserve?");
 
-
                                         while(true) {
                                             String enterRoomNumber = scannerFindAndReserve.nextLine();
 
                                             IRoom room = hotelResource.getRoom(enterRoomNumber);
 
-                                            hotelResource.bookARoom(enterEmail, room, checkInDateFormated, checkOutDateFormated);
+                                            Reservation reservation =  hotelResource.bookARoom(enterEmail, room, checkInDateFormated, checkOutDateFormated);
+                                            System.out.println("Booked with" + reservation);
+
+                                            //scannerFindAndReserve.next();
+                                            break;
 
                                         }
-                                    } else {
-                                        break;
                                     }
+                                    break;
                                 }
-                            } else {
-                                break;
                             }
+                            break;
                         }
 
                     } else if (bookRoom.equalsIgnoreCase("n")) {
@@ -157,7 +159,7 @@ public class MainMenu {
                     } else {
                         System.out.println("Please enter n or y");
                     }
-
+                    break;
                 }
             }
 

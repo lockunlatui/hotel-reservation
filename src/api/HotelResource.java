@@ -25,7 +25,7 @@ public class HotelResource {
             throw new IllegalArgumentException("Email cannot be null or empty");
         }
 
-        for(Customer customer : customers) {
+        for(Customer customer : customerService.getAllCustomers()) {
             if(customer.getEmail().equals(email)) {
                 return customer;
             }
