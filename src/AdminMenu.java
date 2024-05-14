@@ -94,7 +94,13 @@ public class AdminMenu {
                     adminResource.displayAllReservations();
                     break;
                 case 4:
-                    addRoom();
+                    try {
+                        addRoom();
+                    } catch (Exception e) {
+                        System.out.println("Room is existed");
+                        break;
+                    }
+
                     break;
                 case 5:
                     MainMenu.main(null);
