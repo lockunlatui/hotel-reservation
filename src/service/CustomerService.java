@@ -11,13 +11,21 @@ import static validation.CustomerValidation.validateCustomer;
 public class CustomerService {
     private static final List<Customer> allCustomers = new ArrayList<>();
 
-    public void addCustomer(String email, String firstName, String lastName) {
-        validateCustomer(email, firstName, lastName);
+    private static CustomerService customerServiceInstance;
 
-        allCustomers.add(new Customer(email, firstName, lastName));
+    private CustomerService() {}
+
+    public static CustomerService getInstance() {
+        if(customerServiceInstance == null) {
+            customerServiceInstance = new CustomerService();
+        }
+        return customerServiceInstance;
     }
 
-
+    public void addCustomer(String email, String firstName, String lastName) {
+        validateCustomer(email, firstName, lastName);
+        allCustomers.add(new Customer(email, firstName, lastName));
+    }
 
     public Customer getCustomer(String email) {
 
@@ -30,7 +38,6 @@ public class CustomerService {
                 return customer;
             }
         }
-
         return null;
     };
 

@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Objects;
+
 public class Room implements IRoom {
 
     private String roomNumber;
@@ -41,5 +43,18 @@ public class Room implements IRoom {
 
     public void setEnumeration(RoomType enumeration) {
         this.enumeration = enumeration;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Room room = (Room) o;
+        return Objects.equals(roomNumber, room.roomNumber);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(roomNumber);
     }
 }

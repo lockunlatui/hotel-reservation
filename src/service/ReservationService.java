@@ -5,19 +5,33 @@ import model.IRoom;
 import model.Reservation;
 import model.Room;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class ReservationService {
-    private final static List<Room> rooms = new ArrayList<Room>();
+    private final static Set<Room> rooms = new HashSet<>();
     private final static List<Reservation> reservations = new ArrayList<>();
+
+    private static ReservationService reservationServiceInstance;
+
+    private ReservationService() {}
+
+    public static ReservationService getInstance(){
+        if(reservationServiceInstance == null) {
+            reservationServiceInstance = new ReservationService();
+        }
+        return reservationServiceInstance;
+    }
+
 
     public void addRoom(Room room) {
         if (!rooms.contains(room)) {
-            rooms.add(room);
-            System.out.println("Created a new room " +room);
+            boolean isAdded = rooms.add(room);
+
+            if(isAdded) {
+                System.out.println("Created a new room " +room);
+            } else {
+                throw new IllegalArgumentException("Room already existes");
+            }
         } else {
             throw new IllegalArgumentException("Room already exists");
         }
@@ -33,7 +47,6 @@ public class ReservationService {
                 return room;
             }
         }
-
         return null;
     }
 

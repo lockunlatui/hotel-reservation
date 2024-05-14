@@ -14,16 +14,24 @@ import java.util.Objects;
 import java.util.Scanner;
 
 public class MainMenu {
-    static HotelResource hotelResource = new HotelResource();
-    static ReservationService reservationService = new ReservationService();
-    static CustomerService customerService = new CustomerService();
+    static HotelResource hotelResource = HotelResource.getInstance();
+    static ReservationService reservationService = ReservationService.getInstance();
+    static CustomerService customerService = CustomerService.getInstance();
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
             displayMenu();
-            int choice = scanner.nextInt();
+            int choice = 0;
+
+            try {
+                 choice = scanner.nextInt();
+            } catch (Exception e) {
+                scanner.next();
+            }
+
+
             switch (choice) {
                 case 1:
                     handleFindAndReserve();
@@ -54,12 +62,7 @@ public class MainMenu {
                             System.out.println("Customer isn't exist");
                             break;
                         }
-
-
                     }
-
-
-
                     break;
                 case 3:
                     handleCreateCustomer();
@@ -74,6 +77,7 @@ public class MainMenu {
                 default:
                     System.out.println("Invalid choice");
             }
+
         }
 
 

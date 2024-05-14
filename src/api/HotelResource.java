@@ -14,11 +14,22 @@ import java.util.List;
 import static validation.CustomerValidation.validateCustomer;
 
 public class HotelResource {
+
+    private static HotelResource hotelInstance;
+
+    private HotelResource() {}
+
+    public static HotelResource getInstance() {
+        if(hotelInstance == null) {
+            hotelInstance = new HotelResource();
+        }
+        return hotelInstance;
+    }
+
     List<Customer> customers = new ArrayList<Customer>();
 
-
-    CustomerService customerService = new CustomerService();
-    ReservationService  reservationService = new ReservationService();
+    CustomerService customerService = CustomerService.getInstance();
+    ReservationService  reservationService = ReservationService.getInstance();
 
     public Customer getCustomer(String email) {
         if(email == null || email.isEmpty()) {
@@ -65,12 +76,12 @@ public class HotelResource {
             throw new IllegalArgumentException("Room number cannot be null or empty");
         }
 
-        if (checkInDate == null || checkInDate.after(new Date())) {
-            throw new IllegalArgumentException("Check In Date cannot be null or empty");
+        if (checkInDate == null || checkOutDate == null) {
+            throw new IllegalArgumentException("Check In Date and Check Out Date cannot be null or empty");
         }
 
-        if (checkOutDate == null || checkOutDate.after(new Date())) {
-            throw new IllegalArgumentException("Check Out Date cannot be null or empty");
+        if(checkInDate.before(new Date()) || checkOutDate.before(new Date())) {
+            throw new IllegalArgumentException("Check In Date and Check Out Date cannot before current date");
         }
 
         Customer customer = getCustomer(customerEmail);
@@ -96,8 +107,6 @@ public class HotelResource {
 
         Collection<IRoom> availableRooms = new ArrayList<>();
 
-
-
         for(Reservation reservation : reservationService.getReservations()) {
             if(reservation.getCheckInDate().equals(checkInDate) && reservation.getCheckOutDate().equals(checkOutDate)) {
                 IRoom room = reservation.getRoom();
@@ -106,6 +115,5 @@ public class HotelResource {
         }
 
         return availableRooms;
-
     }
 }
