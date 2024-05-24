@@ -81,35 +81,43 @@ public class AdminMenu {
             System.out.println("4. Add a Room");
             System.out.println("5. Back to Main Menu");
             System.out.print("Enter your choice: ");
-            int choice = scanner.nextInt();
 
-            switch(choice) {
-                case 1:
-                    System.out.println("All Customers "+ adminResource.getAllCustomers());
-                    break;
-                case 2:
-                    System.out.println("All Rooms"+ adminResource.getAllRooms());
-                    break;
-                case 3:
-                    adminResource.displayAllReservations();
-                    break;
-                case 4:
-                    try {
-                        addRoom();
-                    } catch (Exception e) {
-                        System.out.println("Room is existed");
+
+            try {
+                int choice = scanner.nextInt();
+                switch(choice) {
+                    case 1:
+                        System.out.println("All Customers "+ adminResource.getAllCustomers());
                         break;
-                    }
+                    case 2:
+                        System.out.println("All Rooms"+ adminResource.getAllRooms());
+                        break;
+                    case 3:
+                        adminResource.displayAllReservations();
+                        break;
+                    case 4:
+                        try {
+                            addRoom();
+                        } catch (Exception e) {
+                            System.out.println("Room is existed");
+                            break;
+                        }
 
-                    break;
-                case 5:
-                    MainMenu.main(null);
-                    break;
-                default:
-                    System.out.println("Invalid choice");
-                    break;
+                        break;
+                    case 5:
+                        MainMenu.main(null);
+                        break;
+                    default:
+                        System.out.println("Invalid choice");
+                        break;
 
+                }
+            } catch (Exception e){
+                System.out.println("Please enter correct the choose");
+                scanner.next();
             }
+
+
         }
 
 
