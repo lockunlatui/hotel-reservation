@@ -72,10 +72,10 @@ public class ReservationService {
 
     private boolean isRoomAvailable(IRoom room, Date checkInDate, Date checkOutDate) {
         for(Reservation existingReservation : reservations){
-            boolean isBeforeInDate = checkInDate.equals(existingReservation.getCheckInDate());
-            boolean isAfterOutDate = checkOutDate.equals(existingReservation.getCheckOutDate());
+            boolean isBeforeInDate = checkInDate.after(existingReservation.getCheckInDate()) && checkInDate.before(existingReservation.getCheckOutDate());
+            boolean isAfterOutDate = checkOutDate.after(existingReservation.getCheckInDate()) && checkOutDate.before(existingReservation.getCheckInDate());
             boolean isExistingRoom = existingReservation.getRoom() == room;
-            if(isExistingRoom &&  isBeforeInDate && isAfterOutDate){
+            if(isExistingRoom &&  (isBeforeInDate || isAfterOutDate)){
                 return false;
             }
         }

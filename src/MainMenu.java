@@ -117,22 +117,21 @@ public class MainMenu {
 
     private static void handleFindAndReserve() {
         Scanner scannerFindAndReserve = new Scanner(System.in);
+        boolean isBookAgain = false;
+        while(true){
 
-        System.out.println("Enter CheckIn Date mm/dd/yyyy example 08/07/1995");
-        String checkInDate = scannerFindAndReserve.nextLine();
+            System.out.println("Enter CheckIn Date mm/dd/yyyy example 08/07/1995");
+            String checkInDate = scannerFindAndReserve.nextLine();
 
-        System.out.println("Enter CheckOut Date mm/dd/yyyy example 08/09/1995");
-        String checkOutDate = scannerFindAndReserve.nextLine();
+            System.out.println("Enter CheckOut Date mm/dd/yyyy example 08/09/1995");
+            String checkOutDate = scannerFindAndReserve.nextLine();
 
-        SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
-
-        boolean isValidDate = false;
-        while(!isValidDate){
+            SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
             try {
 
                 Date checkInDateFormated = formatter.parse(checkInDate);
                 Date checkOutDateFormated = formatter.parse(checkOutDate);
-                isValidDate = true;
+
                 Collection<IRoom> availableRooms = reservationService.findRooms(checkInDateFormated, checkOutDateFormated);
 
                 if(availableRooms.isEmpty()) {
@@ -142,14 +141,17 @@ public class MainMenu {
                         String anotherChoice = scannerFindAndReserve.nextLine();
 
                         if (anotherChoice.equalsIgnoreCase("y")) {
-                            reservationService.findRooms(checkInDateFormated, checkOutDateFormated);
+                            isBookAgain = false;
+                           break;
                         } else if (anotherChoice.equalsIgnoreCase("n")) {
-                            break;
+                            return;
                         } else {
                             System.out.println("Please enter n or y");
                         }
 
                     }
+
+
                 } else {
                     System.out.println("Would you like to book a room? y/n");
 
@@ -182,10 +184,8 @@ public class MainMenu {
 
                                                 Reservation reservation =  hotelResource.bookARoom(enterEmail, room, checkInDateFormated, checkOutDateFormated);
                                                 System.out.println("Booked with" + reservation);
-
-                                                //scannerFindAndReserve.next();
+                                                isBookAgain = true;
                                                 break;
-
                                             }
                                         }
                                         break;
@@ -209,6 +209,11 @@ public class MainMenu {
                 System.out.println("Format date is wrong");
                 break;
             }
+
+            if(isBookAgain) {
+                break;
+            }
+
         }
 
 
