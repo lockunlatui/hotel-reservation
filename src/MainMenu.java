@@ -126,84 +126,92 @@ public class MainMenu {
 
         SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
 
-        try {
-            Date checkInDateFormated = formatter.parse(checkInDate);
-            Date checkOutDateFormated = formatter.parse(checkOutDate);
-            Collection<IRoom> availableRooms = reservationService.findRooms(checkInDateFormated, checkOutDateFormated);
+        boolean isValidDate = false;
+        while(!isValidDate){
+            try {
 
-            if(availableRooms.isEmpty()) {
-                System.out.println("Would you like to add another room y/n");
+                Date checkInDateFormated = formatter.parse(checkInDate);
+                Date checkOutDateFormated = formatter.parse(checkOutDate);
+                isValidDate = true;
+                Collection<IRoom> availableRooms = reservationService.findRooms(checkInDateFormated, checkOutDateFormated);
 
-                while (true) {
-                    String anotherChoice = scannerFindAndReserve.nextLine();
+                if(availableRooms.isEmpty()) {
+                    System.out.println("Would you like to add another room y/n");
 
-                    if (anotherChoice.equalsIgnoreCase("y")) {
-                        reservationService.findRooms(checkInDateFormated, checkOutDateFormated);
-                    } else if (anotherChoice.equalsIgnoreCase("n")) {
-                        break;
-                    } else {
-                        System.out.println("Please enter n or y");
-                    }
+                    while (true) {
+                        String anotherChoice = scannerFindAndReserve.nextLine();
 
-                }
-            } else {
-                System.out.println("Would you like to book a room? y/n");
-
-                while (true) {
-                    String bookRoom = scannerFindAndReserve.nextLine();
-
-                    if (bookRoom.equalsIgnoreCase("y")) {
-
-                        System.out.println("Do you have an account with us? y/n");
-
-
-                        while (true) {
-                            String doYouHaveAccount = scannerFindAndReserve.nextLine();
-
-                            if (doYouHaveAccount.equalsIgnoreCase("y")) {
-
-                                System.out.println("Enter email format: name@domain.com");
-
-                                while (true) {
-                                    String enterEmail = scannerFindAndReserve.nextLine();
-
-                                    if (!enterEmail.isEmpty()) {
-
-                                        System.out.println("What room number would you like to reserve?");
-
-                                        while(true) {
-                                            String enterRoomNumber = scannerFindAndReserve.nextLine();
-
-                                            IRoom room = hotelResource.getRoom(enterRoomNumber);
-
-                                            Reservation reservation =  hotelResource.bookARoom(enterEmail, room, checkInDateFormated, checkOutDateFormated);
-                                            System.out.println("Booked with" + reservation);
-
-                                            //scannerFindAndReserve.next();
-                                            break;
-
-                                        }
-                                    }
-                                    break;
-                                }
-                            }
+                        if (anotherChoice.equalsIgnoreCase("y")) {
+                            reservationService.findRooms(checkInDateFormated, checkOutDateFormated);
+                        } else if (anotherChoice.equalsIgnoreCase("n")) {
                             break;
+                        } else {
+                            System.out.println("Please enter n or y");
                         }
 
-                    } else if (bookRoom.equalsIgnoreCase("n")) {
-                        break;
-                    } else {
-                        System.out.println("Please enter n or y");
                     }
-                    break;
+                } else {
+                    System.out.println("Would you like to book a room? y/n");
+
+                    while (true) {
+                        String bookRoom = scannerFindAndReserve.nextLine();
+
+                        if (bookRoom.equalsIgnoreCase("y")) {
+
+                            System.out.println("Do you have an account with us? y/n");
+
+
+                            while (true) {
+                                String doYouHaveAccount = scannerFindAndReserve.nextLine();
+
+                                if (doYouHaveAccount.equalsIgnoreCase("y")) {
+
+                                    System.out.println("Enter email format: name@domain.com");
+
+                                    while (true) {
+                                        String enterEmail = scannerFindAndReserve.nextLine();
+
+                                        if (!enterEmail.isEmpty()) {
+
+                                            System.out.println("What room number would you like to reserve?");
+
+                                            while(true) {
+                                                String enterRoomNumber = scannerFindAndReserve.nextLine();
+
+                                                IRoom room = hotelResource.getRoom(enterRoomNumber);
+
+                                                Reservation reservation =  hotelResource.bookARoom(enterEmail, room, checkInDateFormated, checkOutDateFormated);
+                                                System.out.println("Booked with" + reservation);
+
+                                                //scannerFindAndReserve.next();
+                                                break;
+
+                                            }
+                                        }
+                                        break;
+                                    }
+                                }
+                                break;
+                            }
+
+                        } else if (bookRoom.equalsIgnoreCase("n")) {
+                            break;
+                        } else {
+                            System.out.println("Please enter n or y");
+                        }
+                        break;
+                    }
                 }
+
+
+
+            } catch (ParseException e) {
+                System.out.println("Format date is wrong");
+                break;
             }
-
-
-
-        } catch (ParseException e) {
-            System.out.println("Error parsing date: " + e.getMessage());
         }
+
+
     }
 
 
