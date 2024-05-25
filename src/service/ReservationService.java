@@ -75,8 +75,14 @@ public class ReservationService {
             boolean isBeforeInDate = checkInDate.after(existingReservation.getCheckInDate()) && checkInDate.before(existingReservation.getCheckOutDate());
             boolean isAfterOutDate = checkOutDate.after(existingReservation.getCheckInDate()) && checkOutDate.before(existingReservation.getCheckInDate());
             boolean isExistingRoom = existingReservation.getRoom() == room;
-            if(isExistingRoom &&  (isBeforeInDate || isAfterOutDate)){
-                return false;
+            if(isExistingRoom){
+                if(isBeforeInDate) {
+                    return false;
+                } else if (isAfterOutDate) {
+                    return false;
+                } else {
+                    return false;
+                }
             }
         }
 
@@ -86,21 +92,19 @@ public class ReservationService {
     public Collection<IRoom> findRooms(Date checkInDate, Date checkOutDate) {
         Collection<IRoom> availableRooms = new ArrayList<>();
 
+
         if(checkInDate == null || checkOutDate == null){
             throw new IllegalArgumentException("Information reservation cannot be null");
         }
 
         for(IRoom room : getRooms()){
             if(isRoomAvailable(room, checkInDate, checkOutDate)){
+                System.out.println("Room " + room.getRoomNumber() + " is available");
                 availableRooms.add(room);
-                System.out.println("Room number " + room.getRoomNumber() + " is available");
             } else {
-                System.out.println("Room is not available");
-                return availableRooms;
+                System.out.println("Room " + room.getRoomNumber() + " is not available");
             }
         }
-
-        System.out.println("Available rooms: " + availableRooms);
         return availableRooms;
     }
 
